@@ -1,0 +1,14 @@
+services:
+  unstructured-api-filesurl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '3011:3000' # Change this if you want
+    env_file:
+      - .env
+
+networks:
+  unstructured-network:
+    driver: bridge  # 创建一个名为unstructured-network的网络

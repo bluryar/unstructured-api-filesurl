@@ -1,0 +1,30 @@
+services:
+  unstructured-api-filesurl:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '3011:3000' # Change this if you want
+    environment:
+      - UNSTRUCTURED_API_HOST=http://unstructured-api:8000
+      - UNSTRUCTURED_API_KEY=uwVmnjep5GxXhYLzzgFFj7xLp4cqUKp7
+    depends_on:
+      - unstructured-api
+  unstructured-api:
+    image: downloads.unstructured.io/unstructured-io/unstructured-api:latest
+    ports:
+      - "8011:8000"  # 映射端口，将容器的8000端口映射到宿主机的8000端口
+    environment:
+      - UNSTRUCTURED_API_KEY=uwVmnjep5GxXhYLzzgFFj7xLp4cqUKp7
+      - HF_ENDPOINT=https://hf-mirror.com
+    deploy:
+      resources:
+        limits:
+          memory: 16000M  # 限制容器使用的最大内存
+    networks:
+      - unstructured-network
+
+networks:
+  unstructured-network:
+    driver: bridge  # 创建一个名为unstructured-network的网络
